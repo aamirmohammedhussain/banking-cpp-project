@@ -454,8 +454,8 @@ void time(int i = 0) {
         struct dostime_t t;
         _dos_gettime(&t);
         getdate(&d);
-        if (d.da_year >= 2013 && int(d.da_mon) >= 5 && int(d.da_day) >= 4)
-            exit(0);
+        // if (d.da_year >= 2013 && int(d.da_mon) >= 5 && int(d.da_day) >= 4)
+        //    exit(0);
         gotoxy(5, 24);
         textcolor(3);
         if (i == 2)
@@ -1774,7 +1774,7 @@ void credits() {
 void main() {
     message();
     loading();
-    pass();
+    // pass();
     menu();
     credits();
     clrscr();
