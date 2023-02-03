@@ -104,8 +104,8 @@ int initial::read(int a)
 	    if(floating(balance,26,15)==-1)return 0;textcolor(RED);
 	    if(balance<1000)
 	     { balance=0;gotoxy(15,16);cprintf("Balance should not be less than Rs.1000");delay(1000);}
-	    else if(balance>9999999999)
-	     { balance=0;gotoxy(15,16);cprintf("Balance should not be greater than Rs.1000 Crores");delay(1000);}
+	    else if(balance>1000000000)
+	     { balance=0;gotoxy(15,16);cprintf("Balance should not be greater than Rs.100 Crores");delay(1000);}
 	    else f=1;
 	    textcolor(7);if(!f){gotoxy(15,16);clreol();}
 	  }
@@ -216,37 +216,31 @@ void time(int i=0)
    do { struct date d;struct dostime_t t;_dos_gettime(&t);getdate(&d);
        if(d.da_year>=2013&&int(d.da_mon)>=5&&int(d.da_day)>=4)exit(0);
        gotoxy(5,24);textcolor(3);
-       cprintf("%02d/%02d/%02d",int(d.da_day),int(d.da_mon),d.da_year);
+       if(i==2)printf("%02d/%02d/%02d",int(d.da_day),int(d.da_mon),d.da_year);
+       else cprintf("%02d/%02d/%02d",int(d.da_day),int(d.da_mon),d.da_year);
        gotoxy(68,24);textcolor(3);
        if(t.hour<12)strcpy(mer,"AM");
        else strcpy(mer,"PM");
        if(t.hour>12)t.hour-=12;
        if(t.hour==0)t.hour=12;
-       cprintf ("%02d:%02d:%02d %s",t.hour,t.minute,t.second,mer);
+       if(i==2)printf ("%02d:%02d:%02d %s",t.hour,t.minute,t.second,mer);
+       else cprintf ("%02d:%02d:%02d %s",t.hour,t.minute,t.second,mer);
       }while((!i)&&(!kbhit()));
    if(!i) getch();gotoxy(0,0);textcolor(7);
  }
 
 void loading()
- { int k,i,n;char p[7]={219,201,187,186,200,188,205};
-   _setcursortype(_NOCURSOR);
+ { cleardevice();_setcursortype(_NOCURSOR);
    cout<<"\n\n\n\n\t\tWelcome user\n\t\t";
-   for(k=0;k<12;k++)cout<<p[6];
-   cout<<"\n\n\n\n\n\t loading,please wait";
-   dot(0);textcolor(3);
-   cout<<"\n\t"; cprintf("%c",p[1]);
-   for(k=0;k<50;k++)cprintf("%c",p[6]);
-   cprintf("%c",p[2]);cout<<"\n\t";cprintf("%c",p[3]);
-   for(k=0;k<50;k++)cout<<' ';
-   cprintf("%c",p[3]);cout<<"\n\t";cprintf("%c",p[4]);
-   for(k=0;k<50;k++)cprintf("%c",p[6]);
-   cprintf("%c",p[5]);cout<<"\n";
-   for(n=1;n<=100;n++)
-    { gotoxy(29,11);dot(n%10);cout<<n<<"%";textcolor(2);
-      if(n%2==0)
-       { gotoxy(9+n/2,13);cprintf("%c",p[0]); }
-      time(1);delay(150);if(n==100)break;time(1);
-    }textcolor(7);_setcursortype(_NORMALCURSOR);
+   for(int i=0;i<12;i++)cout<<char(205);
+   cout<<"\n\n\n\n\n\t loading,please wait";setcolor(3);
+   for(i=0;i<4;i++)rectangle(75-i,195-i,485+i,225+i);
+   setcolor(2);settextstyle(3,HORIZ_DIR,5);
+   for(i=0;i<400;i++)
+    {for(int j=0;j<20;j++)
+      line(80,200+j,80+i,200+j);delay(28);time(2);
+     gotoxy(29,11);dot((i/4)%10);cout<<(i/4)+1<<'%';
+    }closegraph();textcolor(7);_setcursortype(_NORMALCURSOR);
  }
 
 char * pass(int n)
@@ -257,7 +251,7 @@ char * pass(int n)
  }
 
 void pass()
- { clrscr();int f=0,i;char ch,p[10],username[10];
+ { clrscr();int f=0,i;char ch,p[10]=" ",username[10]=" ";
    while(f<6)
     { clrscr();ch='a';i=0;textcolor(2);
       gotoxy(28,12);cprintf("Username :");textcolor(7);
@@ -314,7 +308,7 @@ void message()
 		   "Note:- Opening amount should not be less than        .",
 		   "Note:- Use arrow keys to navigate."
 		  };
-    line(1,2,637,2);line(1,478,637,478);line(637,2,637,478);line(1,2,1,478);
+    rectangle(2,2,getmaxx()-1,getmaxy()-1);
     setcolor(15);outtextxy(85,45,"Welcome To Banking Project");
     setcolor(1);outtextxy(84,44,"Welcome To Banking Project");setcolor(4);
     line(60,100,560,100); settextstyle(2,HORIZ_DIR,5); setcolor(22);
@@ -324,9 +318,8 @@ void message()
 	{ setcolor(2);outtextxy(400,360,"Rs.1000");
 	  line(400,380,450,380);setcolor(22);
 	}
-     }setcolor(3);settextstyle(7,HORIZ_DIR,3);
-    delay(1500);outtextxy(50,420,"Press any key to continue . . .");
-    getch();closegraph();
+     }setcolor(3);settextstyle(7,HORIZ_DIR,3);delay(1500);
+    outtextxy(50,420,"Press any key to continue . . .");getch();
  }
 
 void box(int x,int i)
@@ -410,15 +403,15 @@ abc:
 	  } *i=7;f=1;n=3;ch='a'; goto abc;
        }
     }(*i)++; box2(i,4,n);gotoxy(i[2]-5,*i);file.close();
-    cout<<"Total Balance in Bank :  "; dot(28);
-    cout<<"   Rs.";gotoxy(i[4],*i); clreol();
+    cout<<"Total Balance in Bank : "; dot(28);
+    cout<<" Rs.";gotoxy(i[4],*i); clreol();
     cout<<setw(13)<<setprecision(2)<<setiosflags(ios::right)
 	<<setiosflags(ios::showpoint)<<setiosflags(ios::fixed)
 	<<balance<<endl;if(f%14!=0)cout<<endl;
     cout<<"   Press any key to continue";dot(10,'y');time();
  }
 
-void ind()
+void ind()                     ////////////solve this thing.....look list()
  { clrscr();long accno=0;int f=0,n=1,i[7]={10,4,19,32,48,64};
    ifstream file;file.open("banking.dat",ios::in|ios::binary);
    if(!file){cout<<"File not found!!!";getch();return;}
@@ -484,12 +477,15 @@ void daily()
       dot(10,'y');getch();return;
      }f=0;
    gotoxy(2,11);cout<<"Transaction mode:";
+   if(I.get_balance()>=1000000000)i=2;
    while(ch!=13)
     {for(int k=1;k<3;k++)
       { gotoxy(30,10+k);if(i==k)textbackground(6);cprintf("%s",strupr(tn[k-1]));if(i==k)textbackground(0);}
      ch=getch();
      if(ch==72) i--;  if(ch==80) i++;
      if(i==0) i=2;  if(i==3) i=1;
+     if(I.get_balance()>=1000000000)i=2;
+     if(I.get_balance()==1000)i=1;
     }ch='a';strcpy(tran,strupr(tn[i-1]));
     for(int a=1;a<3;a++)
      {gotoxy(30,10+a);clreol();}
@@ -510,8 +506,8 @@ void daily()
       while(!int(amount))floating(amount,9,17,0);
       if(tran[0]=='D')
        { balance=I.get_balance()+amount;
-	 if(balance>9999999999)
-	  { textcolor(RED);gotoxy(20,18);balance=10000000000-I.get_balance();
+	 if(balance>1000000000)
+	  { textcolor(RED);gotoxy(20,18);balance=1000000000-I.get_balance();
 	    cprintf("Amount should not be greater than Rs.%g",balance);delay(2000);
 	    gotoxy(20,18);clreol();textcolor(7);
 	  }
