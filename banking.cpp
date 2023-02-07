@@ -832,101 +832,103 @@ abc:
     time();
 }
 
-void ind()  ////////////solve this thing.....look list() {
+// solve this thing
+// look list()
+void ind() {
     clrscr();
-long accno = 0;
-int f = 0, n = 1, i[7] = {10, 4, 19, 32, 48, 64};
-ifstream file;
-file.open("banking.dat", ios::in | ios::binary);
-if (!file) {
-    cout << "File not found!!!";
-    getch();
-    return;
-}
-gotoxy(32, 2);
-textcolor(5);
-cprintf("Individual Account");
-textcolor(BROWN);
-line(32, 3, 18);
-textcolor(7);
-cout << "\n\n Account No:";
-while (!accno)
-    integer(accno, 13, 5, 0);
-textcolor(5 + BLINK);
-for (int t = 1; t <= 14; t++) {
+    long accno = 0;
+    int f = 0, n = 1, i[7] = {10, 4, 19, 32, 48, 64};
+    ifstream file;
+    file.open("banking.dat", ios::in | ios::binary);
+    if (!file) {
+        cout << "File not found!!!";
+        getch();
+        return;
+    }
+    gotoxy(32, 2);
+    textcolor(5);
+    cprintf("Individual Account");
+    textcolor(BROWN);
+    line(32, 3, 18);
+    textcolor(7);
+    cout << "\n\n Account No:";
+    while (!accno)
+        integer(accno, 13, 5, 0);
+    textcolor(5 + BLINK);
+    for (int t = 1; t <= 14; t++) {
+        gotoxy(2, 8);
+        clreol();
+        cprintf("Searching");
+        dot(t % 7, 'y');
+    }
+    textcolor(7);
     gotoxy(2, 8);
     clreol();
-    cprintf("Searching");
-    dot(t % 7, 'y');
-}
-textcolor(7);
-gotoxy(2, 8);
-clreol();
-while (file) {
-    file.read((char *)&A, sizeof(A));
-    if (!file)
-        break;
-    if (A.get_accno() == accno) {
-        A.print(i);
-        cout << endl;
-        (*i)++;
-        n++;
-        f = 1;
+    while (file) {
+        file.read((char *)&A, sizeof(A));
+        if (!file)
+            break;
+        if (A.get_accno() == accno) {
+            A.print(i);
+            cout << endl;
+            (*i)++;
+            n++;
+            f = 1;
+        }
     }
-}
-file.close();
-if (!f) {
-    cout << "Account no does not exist.\n\n Press any key to continue";
-    dot(10, 'y');
-    getch();
-    return;
-}
-file.open("initial.dat", ios::in | ios::binary);
-while (file) {
-    file.read((char *)&I, sizeof(I));
-    if (!file)
-        break;
-    if (I.get_accno() == accno) {
-        gotoxy(2, 5);
-        clreol();
-        cout << "Account No:" << I.get_accno();
-        gotoxy(20, 5);
-        cout << I.get_name();
-        gotoxy(20, 6);
-        cout << I.get_address();
+    file.close();
+    if (!f) {
+        cout << "Account no does not exist.\n\n Press any key to continue";
+        dot(10, 'y');
+        getch();
+        return;
     }
-}
-file.close();
-gotoxy(1, 8);
-clreol();
-for (int j = 1; j < 6; j++) {
-    gotoxy(i[j], 8);
+    file.open("initial.dat", ios::in | ios::binary);
+    while (file) {
+        file.read((char *)&I, sizeof(I));
+        if (!file)
+            break;
+        if (I.get_accno() == accno) {
+            gotoxy(2, 5);
+            clreol();
+            cout << "Account No:" << I.get_accno();
+            gotoxy(20, 5);
+            cout << I.get_name();
+            gotoxy(20, 6);
+            cout << I.get_address();
+        }
+    }
+    file.close();
+    gotoxy(1, 8);
     clreol();
-    switch (j) {
-        case 1:
-            cprintf("    Date");
-            break;
-        case 2:
-            cprintf("Particular");
-            break;
-        case 3:
-            cprintf("   Deposit");
-            break;
-        case 4:
-            cprintf("  Withdrawal");
-            break;
-        case 5:
-            cprintf("    Balance");
-            break;
+    for (int j = 1; j < 6; j++) {
+        gotoxy(i[j], 8);
+        clreol();
+        switch (j) {
+            case 1:
+                cprintf("    Date");
+                break;
+            case 2:
+                cprintf("Particular");
+                break;
+            case 3:
+                cprintf("   Deposit");
+                break;
+            case 4:
+                cprintf("  Withdrawal");
+                break;
+            case 5:
+                cprintf("    Balance");
+                break;
+        }
     }
-}
-box2(i, 5, n + 1, 7);
-gotoxy(5, *i);
-cout << "Total :";
-bal_dep_with(i, *i, accno);
-cout << "\n\n   Press any key to continue";
-dot(10, 'n');
-time();
+    box2(i, 5, n + 1, 7);
+    gotoxy(5, *i);
+    cout << "Total :";
+    bal_dep_with(i, *i, accno);
+    cout << "\n\n   Press any key to continue";
+    dot(10, 'n');
+    time();
 }
 
 void daily() {
@@ -1439,7 +1441,7 @@ void del() {
             gotoxy(1, 5);
             clreol();
             gotoxy(15, 5);
-            cout << "Do you want to delete the following account?\n\n";  /////////use capsule
+            cout << "Do you want to delete the following account?\n\n";  // use capsule
             gotoxy(3, 11);
             clreol();
             cout << "* Account No:" << accno;
